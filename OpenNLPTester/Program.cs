@@ -20,6 +20,7 @@ namespace OpenNLPTester
         {
             string modelsPath = @"C:\Users\nerab\source\repos\OpenNLPTester\OpenNLPTester\Resources\Models\";
 
+            Seperator("Tokenizer");
             // Test of Tokenizer with internal string.
             string tokenPath = $@"{modelsPath}EnglishTok.nbin";
             string sentence = "- Sorry Mrs. Hudson, I'll skip the tea I'll be back in October of 2019.";
@@ -30,6 +31,7 @@ namespace OpenNLPTester
                 Console.WriteLine(token);
             }
 
+            Seperator("posTagger");
             // Test of posTagger from tokenized string
             string posPath = $@"{modelsPath}EnglishPOS.nbin";
             string dictPath = $@"{modelsPath}Parser\tagdict";
@@ -40,6 +42,7 @@ namespace OpenNLPTester
                 Console.WriteLine(p);
             }
 
+            Seperator("Named Entity Recognition");
             // Test of the Name entity recognition on currently trained models
             string nerPath = $@"{modelsPath}NameFind\";
             EnglishNameFinder nameFinder = new EnglishNameFinder(nerPath);
@@ -57,12 +60,14 @@ namespace OpenNLPTester
             string ner = nameFinder.GetNames(currentModels, sentence);
             Console.WriteLine(ner);
 
+            Seperator("Parser");
             // TODO: Fix Parse and run secondary test. This is not working as expected.
             // test of the Parser
             EnglishTreebankParser parser = new EnglishTreebankParser(modelsPath);
             Parse parse = parser.DoParse(sentence);
             Console.WriteLine(parse);
 
+            Seperator("Trainer");
             //test the trainer for ner
             // The file with the training samples; works also with an array of files
             string trainingFile = @"C:\Users\nerab\source\repos\OpenNLPTester\OpenNLPTester\Resources\Training\NER\disease.train";
@@ -88,6 +93,11 @@ namespace OpenNLPTester
 
             Console.ReadLine();
 
+        }
+
+        static void Seperator(string desc)
+        {
+            Console.WriteLine($"\n{desc}-----------------------------------------\n");
         }
     }
 }
