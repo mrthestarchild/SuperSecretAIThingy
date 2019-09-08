@@ -23,7 +23,7 @@ namespace OpenNLPTester
             Seperator("Tokenizer");
             // Test of Tokenizer with internal string.
             string tokenPath = $@"{modelsPath}EnglishTok.nbin";
-            string sentence = "- Sorry Mrs. Hudson, I'll skip the tea I'll be back in October of 2019.";
+            string sentence = "- Sorry Mrs. Hudson, I'll skip the tea I'll be back in October 5th 2019.";
             EnglishMaximumEntropyTokenizer tokenizer = new EnglishMaximumEntropyTokenizer(tokenPath);
             string[] tokens = tokenizer.Tokenize(sentence);
             foreach (string token in tokens)
