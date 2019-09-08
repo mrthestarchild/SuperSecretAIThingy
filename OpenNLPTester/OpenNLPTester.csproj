@@ -97,6 +97,7 @@
     <None Include="Resources\Models\Parser\head_rules" />
     <None Include="Resources\Models\Parser\tag.nbin" />
     <None Include="Resources\Models\Parser\tagdict" />
+    <None Include="Resources\Training\NER\disease.train" />
     <None Include="Resources\WordNet\dict\adj.exc" />
     <None Include="Resources\WordNet\dict\adv.exc" />
     <None Include="Resources\WordNet\dict\cntlist" />
@@ -118,8 +119,6 @@
     <None Include="Resources\WordNet\dict\verb.exc" />
     <None Include="Resources\WordNet\dict\verb.Framestext" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\Training\NER\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
