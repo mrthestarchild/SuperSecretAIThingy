@@ -11,6 +11,8 @@ using OpenNLP.Tools.Parser;
 using OpenNLP.Tools.SentenceDetect;
 using SharpEntropy.IO;
 using SharpEntropy;
+using OpenNLP.Tools.Lang.English;
+using OpenNLP.Tools.Chunker;
 
 namespace OpenNLPTester
 {
@@ -18,14 +20,15 @@ namespace OpenNLPTester
     {
         static void Main(string[] args)
         {
-            string modelsPath = @"C:\Users\nerab\source\repos\OpenNLPTester\OpenNLPTester\Resources\Models\";
+            string modelsPath = Directory.GetCurrentDirectory() + @"\Resources\Models\";
+            // TODO: Create buffered reader for someone to enter question using args.
+            string sentence = "- Sorry Mrs. Hudson, I'll skip the tea I'll be back in October 5th 2019 malignant tumor cancer.";
+            string paragraph = "Mr. & Mrs. Smith is a 2005 American romantic comedy action film. The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple. They are surprised to learn that they are both assassins hired by competing agencies to kill each other.";
+
+            OpenNLPMethods methods = new OpenNLPMethods();
 
             Seperator("Tokenizer");
-            // Test of Tokenizer with internal string.
-            string tokenPath = $@"{modelsPath}EnglishTok.nbin";
-            string sentence = "- Sorry Mrs. Hudson, I'll skip the tea I'll be back in October 5th 2019 malignant tumor.";
-            EnglishMaximumEntropyTokenizer tokenizer = new EnglishMaximumEntropyTokenizer(tokenPath);
-            string[] tokens = tokenizer.Tokenize(sentence);
+            string[] tokens = methods.Tokenize(sentence);
             foreach (string token in tokens)
             {
                 Console.WriteLine(token);
@@ -33,22 +36,15 @@ namespace OpenNLPTester
 
             Seperator("Sentence Splitter");
             // Test of Sentence Splitter
-            // TODO: Fix is it not splitting the sentences
-            var paragraph = "Mr. & Mrs. Smith is a 2005 American romantic comedy action film. The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple. They are surprised to learn that they are both assassins hired by competing agencies to kill each other.";
-            string modelPath = $@"{modelsPath}EnglishTok.nbin";
-            var sentenceDetector = new EnglishMaximumEntropySentenceDetector(modelPath);
-            var sentences = sentenceDetector.SentenceDetect(paragraph);
-            foreach (string theSentence in sentences)
+            string[] sp = methods.SentenceSplitter(paragraph);
+            foreach (string spSent in sp)
             {
-                Console.WriteLine(theSentence);
+                Console.WriteLine(spSent);
             }
 
             Seperator("posTagger");
             // Test of posTagger from tokenized string
-            string posPath = $@"{modelsPath}EnglishPOS.nbin";
-            string dictPath = $@"{modelsPath}Parser\tagdict";
-            EnglishMaximumEntropyPosTagger posTagger = new EnglishMaximumEntropyPosTagger(posPath, dictPath);
-            string[] pos = posTagger.Tag(tokens);
+            string[] pos = methods.POSTagger(sentence);
             foreach (string p in pos)
             {
                 Console.WriteLine(p);
@@ -56,29 +52,32 @@ namespace OpenNLPTester
 
             Seperator("Named Entity Recognition");
             // Test of the Name entity recognition on currently trained models
-            string nerPath = $@"{modelsPath}NameFind\";
-            EnglishNameFinder nameFinder = new EnglishNameFinder(nerPath);
-            // specify which types of entities you want to detect
-            string[] files = Directory.GetFiles(nerPath);
-            int filesLength = files.Length;
-            string[] currentModels = new string[filesLength];
-            //create list of model types from models folder
-            for (int x = 0; x < filesLength; x++)
-            {
-                currentModels[x] = Path.GetFileName(files[x]);
-                // sanitize file name
-                currentModels[x] = currentModels[x].Replace(".nbin", "");
-            }
-            string ner = nameFinder.GetNames(currentModels, sentence);
+            string ner = methods.NER(sentence);
             Console.WriteLine(ner);
 
             Seperator("Parse Tree");
-            // TODO: Fix Parse and run secondary test. This is not working as expected.
             // test of the Parser
-            EnglishTreebankParser parser = new EnglishTreebankParser(modelsPath);
-            Parse parse = parser.DoParse(tokens);
-            Console.WriteLine(parse);
+            string ptOutput = methods.ParseTree(sentence);
+            Console.WriteLine(ptOutput);
 
+            Seperator("Chunker");
+            // test of the Chunker
+            var chunks = methods.Chunker(sentence);
+            foreach (var chunk in chunks)
+            {
+                Console.WriteLine(chunk);
+            }
+
+            Seperator("Coference");
+            // TODO: Fix this thang
+            //var coferenceModel = $@"{modelsPath}Coref\";
+            //var coreferenceFinder = new TreebankLinker(coferenceModel);
+            //string[] sentences = {"Mr. & Mrs. Smith is a 2005 American romantic comedy action film.",
+            //    "The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple.",
+            //    "They are surprised to learn that they are both assassins hired by competing agencies to kill each other." };
+            //string coref = coreferenceFinder.GetCoreferenceParse(sentences);
+
+            // TODO: Break out trainer into seperate training methods. This works for now to do static training until it has been fixed.
             Seperator("Trainer");
             //test the trainer for ner
             // The file with the training samples; works also with an array of files
@@ -89,7 +88,7 @@ namespace OpenNLPTester
             int cut = 5;
             // TODO: this is not working as expected
             // Train the model (can take some time depending on your training file size)
-
+            
             GisModel bestModel = MaximumEntropyNameFinder.TrainModel(trainingFile, iterations, cut);
             // Persist the model to use it later
             var outputFilePath = $@"{modelsPath}NameFind\disease.nbin";
@@ -104,5 +103,7 @@ namespace OpenNLPTester
         {
             Console.WriteLine($"\n{desc}-----------------------------------------\n");
         }
+
+       
     }
 }
