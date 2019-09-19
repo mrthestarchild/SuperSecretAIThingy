@@ -33,15 +33,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net45\CommonServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonServiceLocator.SolrNet, Version=1.0.17.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SolrNet.1.0.17\lib\net46\CommonServiceLocator.SolrNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="OpenNLP, Version=1.0.7182.26901, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenNLP.1.3.5\lib\net45\OpenNLP.dll</HintPath>
     </Reference>
     <Reference Include="SharpEntropy, Version=1.0.7182.26900, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenNLP.1.3.5\lib\net45\SharpEntropy.dll</HintPath>
     </Reference>
+    <Reference Include="SolrNet, Version=1.0.17.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SolrNet.Core.1.0.17\lib\net46\SolrNet.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -57,68 +72,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="Resources\Models\Coref\acronyms" />
-    <None Include="Resources\Models\Coref\cmodel.nbin" />
-    <None Include="Resources\Models\Coref\cmodel_nr.nbin" />
-    <None Include="Resources\Models\Coref\defmodel.nbin" />
-    <None Include="Resources\Models\Coref\defmodel_nr.nbin" />
-    <None Include="Resources\Models\Coref\fmodel.nbin" />
-    <None Include="Resources\Models\Coref\fmodel_nr.nbin" />
-    <None Include="Resources\Models\Coref\gen.fem" />
-    <None Include="Resources\Models\Coref\gen.mal" />
-    <None Include="Resources\Models\Coref\gen.nbin" />
-    <None Include="Resources\Models\Coref\imodel.nbin" />
-    <None Include="Resources\Models\Coref\imodel_nr.nbin" />
-    <None Include="Resources\Models\Coref\num.nbin" />
-    <None Include="Resources\Models\Coref\plmodel.nbin" />
-    <None Include="Resources\Models\Coref\plmodel_nr.nbin" />
-    <None Include="Resources\Models\Coref\pmodel.nbin" />
-    <None Include="Resources\Models\Coref\pmodel_nr.nbin" />
-    <None Include="Resources\Models\Coref\pnmodel.nbin" />
-    <None Include="Resources\Models\Coref\pnmodel_nr.nbin" />
-    <None Include="Resources\Models\Coref\sim.nbin" />
-    <None Include="Resources\Models\Coref\tmodel.nbin" />
-    <None Include="Resources\Models\Coref\tmodel_nr.nbin" />
-    <None Include="Resources\Models\EnglishChunk.nbin" />
-    <None Include="Resources\Models\EnglishPOS.nbin" />
-    <None Include="Resources\Models\EnglishSD.nbin" />
-    <None Include="Resources\Models\EnglishTok.nbin" />
-    <None Include="Resources\Models\NameFind\date.nbin" />
-    <None Include="Resources\Models\NameFind\location.nbin" />
-    <None Include="Resources\Models\NameFind\money.nbin" />
-    <None Include="Resources\Models\NameFind\organization.nbin" />
-    <None Include="Resources\Models\NameFind\percentage.nbin" />
-    <None Include="Resources\Models\NameFind\person.nbin" />
-    <None Include="Resources\Models\NameFind\time.nbin" />
-    <None Include="Resources\Models\organization.nbin" />
-    <None Include="Resources\Models\Parser\build.nbin" />
-    <None Include="Resources\Models\Parser\check.nbin" />
-    <None Include="Resources\Models\Parser\chunk.nbin" />
-    <None Include="Resources\Models\Parser\date.nbin" />
-    <None Include="Resources\Models\Parser\head_rules" />
-    <None Include="Resources\Models\Parser\tag.nbin" />
-    <None Include="Resources\Models\Parser\tagdict" />
-    <None Include="Resources\Training\NER\disease.train" />
-    <None Include="Resources\WordNet\dict\adj.exc" />
-    <None Include="Resources\WordNet\dict\adv.exc" />
-    <None Include="Resources\WordNet\dict\cntlist" />
-    <None Include="Resources\WordNet\dict\cntlist.rev" />
-    <None Include="Resources\WordNet\dict\data.adj" />
-    <None Include="Resources\WordNet\dict\data.adv" />
-    <None Include="Resources\WordNet\dict\data.noun" />
-    <None Include="Resources\WordNet\dict\data.verb" />
-    <None Include="Resources\WordNet\dict\frames.vrb" />
-    <None Include="Resources\WordNet\dict\index.adj" />
-    <None Include="Resources\WordNet\dict\index.adv" />
-    <None Include="Resources\WordNet\dict\index.noun" />
-    <None Include="Resources\WordNet\dict\index.sense" />
-    <None Include="Resources\WordNet\dict\index.verb" />
-    <None Include="Resources\WordNet\dict\log.grind.2.1" />
-    <None Include="Resources\WordNet\dict\noun.exc" />
-    <None Include="Resources\WordNet\dict\sentidx.vrb" />
-    <None Include="Resources\WordNet\dict\sents.vrb" />
-    <None Include="Resources\WordNet\dict\verb.exc" />
-    <None Include="Resources\WordNet\dict\verb.Framestext" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
