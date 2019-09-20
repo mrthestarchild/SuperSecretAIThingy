@@ -103,8 +103,6 @@ namespace OpenNLPTester
             return nameFinder.GetNames(nerModels, sentence);
         }
 
-        // TODO: create chunker method
-
         // TODO: create coreference method.
 
     }

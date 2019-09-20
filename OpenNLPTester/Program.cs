@@ -9,6 +9,8 @@ using SolrNet.Attributes;
 using CommonServiceLocator;
 using System.Linq;
 using System.Text.RegularExpressions;
+using OpenNLP.Tools.Lang.English;
+using OpenNLP.Tools.Coreference;
 
 namespace OpenNLPTester
 {
@@ -128,12 +130,12 @@ namespace OpenNLPTester
 
             Seperator("Coference");
             // TODO: Fix this thang
-            //var coferenceModel = $@"{modelsPath}Coref\";
-            //var coreferenceFinder = new TreebankLinker(coferenceModel);
-            //string[] sentences = {"Mr. & Mrs. Smith is a 2005 American romantic comedy action film.",
-            //    "The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple.",
-            //    "They are surprised to learn that they are both assassins hired by competing agencies to kill each other." };
-            //string coref = coreferenceFinder.GetCoreferenceParse(sentences);
+            var coferenceModel = $@"{modelsPath}Coref\";
+            var coreferenceFinder = new TreebankLinker(coferenceModel, LinkerMode.Test);
+            string[] sentences = {"Mr. & Mrs. Smith is a 2005 American romantic comedy action film.",
+                "The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple.",
+                "They are surprised to learn that they are both assassins hired by competing agencies to kill each other." };
+            string coref = coreferenceFinder.GetCoreferenceParse(sentences);
 
             // TODO: Break out trainer into seperate training methods. This works for now to do static training until it has been fixed.
             Seperator("Name Finder Trainer");
