@@ -65,7 +65,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OpenNPLMethods.cs" />
+    <Compile Include="OpenNLP\OpenNLPTrainers.cs" />
+    <Compile Include="OpenNLP\OpenNLPMethods.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

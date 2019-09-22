@@ -86,6 +86,7 @@ namespace OpenNLPTester
             string paragraph = "Mr. & Mrs. Smith is a 2005 American romantic comedy action film. The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple. They are surprised to learn that they are both assassins hired by competing agencies to kill each other.";
 
             OpenNLPMethods methods = new OpenNLPMethods();
+            OpenNLPTrainers trainer = new OpenNLPTrainers(methods, trainingPath);
 
             Seperator("Tokenizer");
             string[] tokens = methods.Tokenize(sentence);
@@ -130,66 +131,30 @@ namespace OpenNLPTester
 
             Seperator("Coference");
             // TODO: Fix this thang
-            var coferenceModel = $@"{modelsPath}Coref\";
-            var coreferenceFinder = new TreebankLinker(coferenceModel, LinkerMode.Test);
-            string[] sentences = {"Mr. & Mrs. Smith is a 2005 American romantic comedy action film.",
-                "The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple.",
-                "They are surprised to learn that they are both assassins hired by competing agencies to kill each other." };
-            string coref = coreferenceFinder.GetCoreferenceParse(sentences);
+            //var coferenceModel = $@"{modelsPath}Coref\";
+            //var coreferenceFinder = new TreebankLinker(coferenceModel, LinkerMode.Test);
+            //string[] sentences = {"Mr. & Mrs. Smith is a 2005 American romantic comedy action film.",
+            //    "The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple.",
+            //    "They are surprised to learn that they are both assassins hired by competing agencies to kill each other." };
+            //string coref = coreferenceFinder.GetCoreferenceParse(sentences);
 
-            // TODO: Break out trainer into seperate training methods. This works for now to do static training until it has been fixed.
+
+            // TODO: implement this method for POStagger to create a testing of each sentence.
             Seperator("Name Finder Trainer");
-            // Test the trainer for ner
-            // The file with the training samples; works also with an array of files
-            string trainingFile = $@"{trainingPath}NER\combined.train";
-            // The number of iterations; no general rule for finding the best value, just try several!
-            int[] iterations = { 100, 200, 1000, 5000 };
-            // The cut; no general rule for finding the best value, just try several!
-            int[] cuts = { 1, 2, 3, 4, 5, 10, 20 };
+            // get variables ready for training
+            // how many times we are going to loop over the file to train
+            int[] iterations = {10, 20, 50, 100, 500, 1000, 5000 };
+            // how many unique entries we are going to look for
+            int[] cuts = { 1, 2, 5, 10, 20, 50, 100 };
+            // what types we are tring to train for NER
+            string[] listOfTypes = { "places" };
 
-            // init values
-            var bestIterationValue = iterations[0];
-            var bestCutValue = cuts[0];
-            var initNumFinds = 0;
-            var bestAccuracy = 0;
-            // get a base model to init the best model, if no change then we will need to try again again.
-            GisModel bestModel = MaximumEntropyNameFinder.TrainModel(trainingFile, bestIterationValue, bestCutValue);
+            // train model, this will output if it was succesful or not.
+            var bestNERModel = trainer.TrainNER(sentence, iterations, cuts, "combined.train", listOfTypes);
             
-            // TODO: this is not working as expected
-            // Train the model (can take some time depending on your training file size)
-            foreach (int iteration in iterations)
-            {
-                foreach (int cut in cuts)
-                {
-                    // train model
-                    GisModel model = MaximumEntropyNameFinder.TrainModel(trainingFile, iteration, cut);
-                    // test model
-                    string modelTestResult = methods.NER(sentence);
-
-                    // set number of finds for what we are matching to
-                    var numOfFinds = Regex.Matches(modelTestResult, "place").Count;
-                    
-                    // check if we find anything, if we do we set the values to know what the best system was and set the new model to bestModel.
-                    if (numOfFinds >= initNumFinds)
-                    {
-                        bestAccuracy = numOfFinds;
-                        bestIterationValue = iteration;
-                        bestCutValue = cut;
-                        bestModel = model;
-                    }
-                }
-            }
-
-            // Write out our findings.
-            Console.WriteLine($"The best accuracy was {bestAccuracy}, the best iteration value was {bestIterationValue}, and the best cutoff value was {bestCutValue}.");
-
-            // Persist the model to use it later
-            var outputFilePath = $@"{modelsPath}NameFind\place.nbin";
-            new BinaryGisModelWriter().Persist(bestModel, outputFilePath); ;
-
-            Console.WriteLine("Done!");
-            Console.ReadLine();
-
+            // persist model and save it for later.
+            var outputFilePath = $@"{modelsPath}NameFind\places.nbin";
+            new BinaryGisModelWriter().Persist(bestNERModel, outputFilePath);
         }
 
         static void Seperator(string desc)

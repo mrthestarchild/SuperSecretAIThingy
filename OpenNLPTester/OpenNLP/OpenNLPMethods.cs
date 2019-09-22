@@ -4,12 +4,8 @@ using OpenNLP.Tools.Parser;
 using OpenNLP.Tools.PosTagger;
 using OpenNLP.Tools.SentenceDetect;
 using OpenNLP.Tools.Tokenize;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OpenNLPTester
 {
@@ -52,6 +48,21 @@ namespace OpenNLPTester
             string[] sentenceArray = Tokenize(sentence);
             EnglishMaximumEntropyPosTagger posTagger = new EnglishMaximumEntropyPosTagger(posBinPath, tagDictPath);
             return posTagger.Tag(sentenceArray);
+
+        }
+        public string[] POSQuestionTagger(string[] questions, string posBinPath = null, string tagDictPath = null)
+        {
+            if (posBinPath == null)
+            {
+                // TODO: Train this nbin file
+                posBinPath = $@"{modelsPath}EnglishQuestionPOS.nbin";
+            }
+            if (tagDictPath == null)
+            {
+                tagDictPath = $@"{modelsPath}Parser\tagdict";
+            }
+            EnglishMaximumEntropyPosTagger posTagger = new EnglishMaximumEntropyPosTagger(posBinPath, tagDictPath);
+            return posTagger.Tag(questions);
 
         }
 
