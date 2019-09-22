@@ -79,13 +79,16 @@ namespace OpenNLPTester
             //Console.ReadKey();
 
             // start of openNLP usage
+
+            // get the paths for the Model and Training files
             string modelsPath = Directory.GetCurrentDirectory() + @"\Resources\Models\";
             string trainingPath = Directory.GetCurrentDirectory() + @"\Resources\Training\";
             // TODO: Create buffered reader for someone to enter question using args.
             string sentence = "- Sorry Mrs. Hudson, I'll skip the tea I'll be back in October 5th 2019. I am headed from Spain to Munich then I am going to stop in Heidelberg.";
             string paragraph = "Mr. & Mrs. Smith is a 2005 American romantic comedy action film. The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple. They are surprised to learn that they are both assassins hired by competing agencies to kill each other.";
 
-            OpenNLPMethods methods = new OpenNLPMethods();
+            // Create an access point for methods and trainers.
+            OpenNLPMethods methods = new OpenNLPMethods(modelsPath);
             OpenNLPTrainers trainer = new OpenNLPTrainers(methods, trainingPath);
 
             Seperator("Tokenizer");
@@ -138,8 +141,6 @@ namespace OpenNLPTester
             //    "They are surprised to learn that they are both assassins hired by competing agencies to kill each other." };
             //string coref = coreferenceFinder.GetCoreferenceParse(sentences);
 
-
-            // TODO: implement this method for POStagger to create a testing of each sentence.
             Seperator("Name Finder Trainer");
             // get variables ready for training
             // how many times we are going to loop over the file to train

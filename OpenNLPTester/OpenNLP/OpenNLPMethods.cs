@@ -11,9 +11,18 @@ namespace OpenNLPTester
 {
     class OpenNLPMethods
     {
-        // TODO: Create overloads for methods
-        string modelsPath = Directory.GetCurrentDirectory() + @"\Resources\Models\";
+        private string modelsPath;
 
+        public OpenNLPMethods(string _modelsPath){
+            modelsPath = _modelsPath;
+        }
+
+        /// <summary>
+        /// Tokenizes a sentence.
+        /// </summary>
+        /// <param name="sentence"></param>
+        /// <param name="tokenPath"></param>
+        /// <returns>Array of words</returns>
         public string[] Tokenize(string sentence, string tokenPath = null)
         {
             if (tokenPath == null)
@@ -25,6 +34,12 @@ namespace OpenNLPTester
             return tokenizer.Tokenize(sentence);
         }
 
+        /// <summary>
+        /// Splits paragraphs into their own sentences
+        /// </summary>
+        /// <param name="paragraph"></param>
+        /// <param name="spPath"></param>
+        /// <returns>Array of sentences</returns>
         public string[] SentenceSplitter(string paragraph, string spPath = null)
         {
             if (spPath == null)
@@ -35,6 +50,13 @@ namespace OpenNLPTester
             return sentenceDetector.SentenceDetect(paragraph);
         }
 
+        /// <summary>
+        /// Tokenizes then tags sentence with their types of words.
+        /// </summary>
+        /// <param name="sentence"></param>
+        /// <param name="posBinPath"></param>
+        /// <param name="tagDictPath"></param>
+        /// <returns>Only the types ie.(noun, verb, adverb)</returns>
         public string[] POSTagger(string sentence, string posBinPath = null, string tagDictPath = null)
         {
             if (posBinPath == null)
@@ -50,6 +72,15 @@ namespace OpenNLPTester
             return posTagger.Tag(sentenceArray);
 
         }
+
+        /// <summary>
+        /// Tags a array of questions and their types for a simple inference.
+        /// </summary>
+        /// <param name="questions"></param>
+        /// <param name="posBinPath"></param>
+        /// <param name="tagDictPath"></param>
+        /// <returns></returns>
+        // TODO: fix this guy
         public string[] POSQuestionTagger(string[] questions, string posBinPath = null, string tagDictPath = null)
         {
             if (posBinPath == null)
@@ -66,6 +97,12 @@ namespace OpenNLPTester
 
         }
 
+        /// <summary>
+        /// Parses with it's POS tags and returns parsed string in full context 
+        /// </summary>
+        /// <param name="sentence"></param>
+        /// <param name="modelPath"></param>
+        /// <returns></returns>
         public string ParseTree(string sentence, string modelPath = null)
         {
             if (modelPath == null)
@@ -77,6 +114,12 @@ namespace OpenNLPTester
             return parse.Show();
         }
 
+        /// <summary>
+        /// Tokenizes, POS tags, and returns full value
+        /// </summary>
+        /// <param name="sentence"></param>
+        /// <param name="chunkerModelPath"></param>
+        /// <returns></returns>
         public List<SentenceChunk> Chunker(string sentence, string chunkerModelPath = null)
         {
             if (chunkerModelPath == null)
@@ -89,6 +132,13 @@ namespace OpenNLPTester
             return chunker.GetChunks(chunkerTokens, chunkerPOS);
         }
 
+        /// <summary>
+        /// Looks up model types in model directory then checks for types in sentence, returns Named Entity Recognition tags on sentece.
+        /// </summary>
+        /// <param name="sentence"></param>
+        /// <param name="nameFindPath"></param>
+        /// <param name="nerModels"></param>
+        /// <returns></returns>
         public string NER(string sentence, string nameFindPath = null, string[] nerModels = null)
         {
             if (nameFindPath == null)

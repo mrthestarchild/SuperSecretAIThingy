@@ -23,6 +23,7 @@ namespace OpenNLPTester
 
         /// <summary>
         /// Train a NER model this can be used for multiple types to be trained but it is not recomended.
+        /// testSentence must contain a testable type that you are passing in.
         /// trainingFile needs to be a .train file
         /// </summary>
         /// <param name="testSentence"></param>
