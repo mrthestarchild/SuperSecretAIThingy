@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using OpenNLP.Tools.NameFind;
 using SharpEntropy.IO;
 using SharpEntropy;
 using SolrNet;
 using SolrNet.Attributes;
 using CommonServiceLocator;
 using System.Linq;
-using System.Text.RegularExpressions;
-using OpenNLP.Tools.Lang.English;
 using OpenNLP.Tools.Coreference;
+using OpenNLP.Tools.Lang.English;
 
 namespace OpenNLPTester
 {
@@ -135,11 +133,13 @@ namespace OpenNLPTester
             Seperator("Coference");
             // TODO: Fix this thang
             //var coferenceModel = $@"{modelsPath}Coref\";
-            //var coreferenceFinder = new TreebankLinker(coferenceModel, LinkerMode.Test);
+
+            //var conreferenceFinder = new TreebankLinker(coferenceModel);
+            
             //string[] sentences = {"Mr. & Mrs. Smith is a 2005 American romantic comedy action film.",
             //    "The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple.",
             //    "They are surprised to learn that they are both assassins hired by competing agencies to kill each other." };
-            //string coref = coreferenceFinder.GetCoreferenceParse(sentences);
+            //var coref = conreferenceFinder.GetCoreferenceParse(sentences);
 
             Seperator("Name Finder Trainer");
             // get variables ready for training
@@ -151,65 +151,18 @@ namespace OpenNLPTester
             string[] listOfTypes = { "places" };
 
             // train model, this will output if it was succesful or not.
-            var bestNERModel = trainer.TrainNER(sentence, iterations, cuts, "combined.train", listOfTypes);
-            
-            // persist model and save it for later.
-            var outputFilePath = $@"{modelsPath}NameFind\places.nbin";
-            new BinaryGisModelWriter().Persist(bestNERModel, outputFilePath);
+            //var bestNERModel = trainer.TrainNER(sentence, iterations, cuts, "combined.train", listOfTypes);
+
+            //persist model and save it for later.
+            //var outputFilePath = $@"{modelsPath}NameFind\places.nbin";
+            //new BinaryGisModelWriter().Persist(bestNERModel, outputFilePath);
+            Console.WriteLine("Done!");
+            Console.ReadKey();
         }
 
         static void Seperator(string desc)
         {
             Console.WriteLine($"\n{desc}-----------------------------------------\n");
         }
-
-        //private static void DeleteAll(ISolrConnection solr)
-        //{
-
-        //    DeleteParameters del = new DeleteParameters();
-        //    SolrNet.Impl.FieldSerializers.DefaultFieldSerializer deffield = new SolrNet.Impl.FieldSerializers.DefaultFieldSerializer();
-        //    SolrNet.Impl.QuerySerializers.DefaultQuerySerializer defquery = new SolrNet.Impl.QuerySerializers.DefaultQuerySerializer(deffield);
-
-        //    SolrNet.Commands.Parameters.DeleteByIdAndOrQueryParam delpar = new SolrNet.Commands.Parameters.DeleteByIdAndOrQueryParam(Enumerable.Empty<string>(),SolrQuery.All, defquery);
-        //    var delete = new SolrNet.Commands.DeleteCommand(delpar, del);
-        //    string res = delete.Execute(solr);
-        //    System.Diagnostics.Trace.WriteLine(res);
-        //}
-
-        //private static void CommitChanges(ISolrConnection solr)
-        //{
-        //    SolrNet.Commands.CommitCommand commit = new SolrNet.Commands.CommitCommand();
-        //    string res = commit.Execute(solr);
-        //    System.Diagnostics.Trace.WriteLine(res);
-        //}
-
-        //private static void AddProducts(ISolrConnection solr, Dictionary<Product, double?> dict)
-        //{
-        //    AddParameters par = new AddParameters();
-        //    ISolrDocumentSerializer<Product> ser = ServiceLocator.Current.GetInstance<ISolrDocumentSerializer<Product>>();
-        //    SolrNet.Commands.AddCommand<Product> addProduct = new SolrNet.Commands.AddCommand<Product>(dict, ser, par);
-        //    string res = addProduct.Execute(solr);
-        //    System.Diagnostics.Trace.WriteLine(res);
-        //}
-
-        //private static void QueryAll()
-        //{
-        //    // Query all documents
-        //    var query = SolrQuery.All;
-        //    var operations = ServiceLocator.Current.GetInstance<ISolrOperations<Product>>();
-        //    var Products = operations.Query(query);
-
-        //    int i = 0;
-        //    foreach (var product in Products)
-        //    {
-        //        i++;
-        //        Console.WriteLine("{0}:\t {1} \t{2} \t{3}", i, product.Id, product.Manufacturer, product.Price);
-        //    }
-
-        //    if (i == 0)
-        //    {
-        //        Console.WriteLine(" = no documents =");
-        //    }
-        //}
     }
 }
