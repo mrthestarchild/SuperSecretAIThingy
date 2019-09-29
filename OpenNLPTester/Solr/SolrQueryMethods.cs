@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace OpenNLPTester.Solr
 {
-    class SolrMethods<T> where T : ISolrBaseModel
+    class SolrQueryMethods<T> where T : ISolrBaseModel
     {
         private ISolrBaseModel _t;
         private ISolrConnection solr;
 
-        SolrMethods(ISolrConnection _solr){
+        SolrQueryMethods(ISolrConnection _solr){
             solr = _solr;
         }
         public void DeleteAll()
@@ -37,13 +37,12 @@ namespace OpenNLPTester.Solr
             System.Diagnostics.Trace.WriteLine(res);
         }
 
-        // TODO: update Product to be generic
         public void Add(Dictionary<T,double?> dict)
         {
             AddParameters par = new AddParameters();
             ISolrDocumentSerializer<T> ser = ServiceLocator.Current.GetInstance<ISolrDocumentSerializer<T>>();
-            SolrNet.Commands.AddCommand<T> addProduct = new SolrNet.Commands.AddCommand<T>(dict, ser, par);
-            string res = addProduct.Execute(solr);
+            SolrNet.Commands.AddCommand<T> add = new SolrNet.Commands.AddCommand<T>(dict, ser, par);
+            string res = add.Execute(solr);
             System.Diagnostics.Trace.WriteLine(res);
         }
 

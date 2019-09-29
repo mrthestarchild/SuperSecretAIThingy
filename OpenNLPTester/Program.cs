@@ -9,72 +9,52 @@ using CommonServiceLocator;
 using System.Linq;
 using OpenNLP.Tools.Coreference;
 using OpenNLP.Tools.Lang.English;
+using OpenNLPTester.Solr.Models;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace OpenNLPTester
 {
     class Program
     {
-        //class Product
-        //{
-        //    [SolrUniqueKey("id")]
-        //    public string Id { get; set; }
-
-        //    [SolrField("manu")]
-        //    public string Manufacturer { get; set; }
-
-        //    [SolrField("cat")]
-        //    public ICollection<string> Categories { get; set; }
-
-        //    [SolrField("price")]
-        //    public decimal Price { get; set; }
-
-        //    [SolrField("inStock")]
-        //    public bool InStock { get; set; }
-        //}
         static void Main(string[] args)
         {
-            // TODO: break out into own method. Maybe use dependency injection for startup
             // Starting testing of solr in main
 
-            // TODO: need to spin up server to be able to test this 
-            //Startup.Init<Product>("http://localhost:8983/solr");
-
-            //var p = new Product
+            //// Temp SolrWebRequest
+            //WebRequest request = WebRequest.Create("http://localhost:8983/solr/techproducts/select?q=test");
+            //WebResponse response = request.GetResponse();
+            //// Console.WriteLine(((HttpWebResponse)response).StatusDescription);
+            //using (Stream dataStream = response.GetResponseStream())
             //{
-            //    Id = "SP2514M",
-            //    Manufacturer = "Samsung Electronics Co. Ltd.",
-            //    Categories = new[] {
-            //    "electronics",
-            //    "hard drive",
-            //},
-            //    Price = 92,
-            //    InStock = true,
-            //};
+            //    // Open the stream using a StreamReader for easy access.  
+            //    StreamReader reader = new StreamReader(dataStream);
+            //    // Read the content.  
+            //    string responseFromServer = reader.ReadToEnd();
+            //    // Display the content.
+            //    dynamic array = JsonConvert.DeserializeObject(responseFromServer);
+            //    foreach (var item in array.response)
+            //    {
+            //        Console.WriteLine(item);
+            //    }
+            //    Console.WriteLine("------------------------------------------------------------------------------------------");
 
-            //var solr = ServiceLocator.Current.GetInstance<ISolrConnection>();
+            //}
+            //// Close the response.  
+            //response.Close();
 
-            //Dictionary<Product, double?> dict = new Dictionary<Product, double?>();
-            //dict.Add(p, 0);
 
-            //Console.WriteLine("-- Add products --");
-            //AddProducts(solr, dict);
-
-            //Console.WriteLine("-- Commit changes --");
-            //CommitChanges(solr);
-
-            //Console.WriteLine("--Query all documents --");
-            //QueryAll();
-
-            //Console.WriteLine("-- Delete all documents --");
-            //DeleteAll(solr);
-
-            //Console.WriteLine("-- Commit changes --");
-            //CommitChanges(solr);
-
-            //Console.WriteLine("--Query all documents --");
-            //QueryAll();
-
-            //Console.ReadKey();
+            // Usage of Solr Query using Solr.net
+            Startup.Init<techproducts>("http://localhost:8983/solr/techproducts");
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<techproducts>>();
+            var results = solr.Query("div");
+            Console.WriteLine($"Count = {results.Count}");
+            foreach (var result in results)
+            {
+                Console.WriteLine($"content = {result.Content.First<string>()}");
+            }
 
             // start of openNLP usage
 
@@ -82,8 +62,16 @@ namespace OpenNLPTester
             string modelsPath = Directory.GetCurrentDirectory() + @"\Resources\Models\";
             string trainingPath = Directory.GetCurrentDirectory() + @"\Resources\Training\";
             // TODO: Create buffered reader for someone to enter question using args.
-            string sentence = "- Sorry Mrs. Hudson, I'll skip the tea I'll be back in October 5th 2019. I am headed from Spain to Munich then I am going to stop in Heidelberg.";
-            string paragraph = "Mr. & Mrs. Smith is a 2005 American romantic comedy action film. The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple. They are surprised to learn that they are both assassins hired by competing agencies to kill each other.";
+            string defaultSentence = "- Sorry Mrs. Hudson, I'll skip the tea I'll be back in October 5th 2019. I am headed from Spain to Munich then I am going to stop in Heidelberg.";
+            string defaultParagraph = "Mr. & Mrs. Smith is a 2005 American romantic comedy action film. The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple. They are surprised to learn that they are both assassins hired by competing agencies to kill each other.";
+
+            Console.WriteLine("Please enter a sentence to parse: ");
+            var sentence = Console.ReadLine();
+            sentence = sentence == "" ? defaultSentence : sentence;
+
+            Console.WriteLine("Please enter a paragraph to parse: ");
+            var paragraph = Console.ReadLine();
+            paragraph = paragraph == "" ? defaultParagraph : paragraph; 
 
             // Create an access point for methods and trainers.
             OpenNLPMethods methods = new OpenNLPMethods(modelsPath);
