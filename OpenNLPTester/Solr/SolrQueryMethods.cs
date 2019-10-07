@@ -12,7 +12,6 @@ namespace OpenNLPTester.Solr
 {
     class SolrQueryMethods<T> where T : ISolrBaseModel
     {
-        private ISolrBaseModel _t;
         private ISolrConnection solr;
 
         SolrQueryMethods(ISolrConnection _solr){

@@ -77,9 +77,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Solr\Models\ISolrBaseModel.cs" />
     <Compile Include="Solr\Models\SolrBaseModel.cs" />
-    <Compile Include="Solr\Models\techproducts.cs" />
+    <Compile Include="Solr\Models\WikiModelResult.cs" />
     <Compile Include="Solr\SolrManagement.cs" />
     <Compile Include="Solr\SolrQueryMethods.cs" />
+    <Compile Include="Utils\OpenNLPUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

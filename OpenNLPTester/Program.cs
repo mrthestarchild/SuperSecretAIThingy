@@ -14,6 +14,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net;
 using Newtonsoft.Json;
+using com.ctc.wstx.ent;
+using System.Threading.Tasks;
+using SolrNet.Commands.Parameters;
 
 namespace OpenNLPTester
 {
@@ -23,37 +26,28 @@ namespace OpenNLPTester
         {
             // Starting testing of solr in main
 
-            //// Temp SolrWebRequest
-            //WebRequest request = WebRequest.Create("http://localhost:8983/solr/techproducts/select?q=test");
-            //WebResponse response = request.GetResponse();
-            //// Console.WriteLine(((HttpWebResponse)response).StatusDescription);
-            //using (Stream dataStream = response.GetResponseStream())
-            //{
-            //    // Open the stream using a StreamReader for easy access.  
-            //    StreamReader reader = new StreamReader(dataStream);
-            //    // Read the content.  
-            //    string responseFromServer = reader.ReadToEnd();
-            //    // Display the content.
-            //    dynamic array = JsonConvert.DeserializeObject(responseFromServer);
-            //    foreach (var item in array.response)
-            //    {
-            //        Console.WriteLine(item);
-            //    }
-            //    Console.WriteLine("------------------------------------------------------------------------------------------");
-
-            //}
-            //// Close the response.  
-            //response.Close();
-
-
             // Usage of Solr Query using Solr.net
-            Startup.Init<techproducts>("http://localhost:8983/solr/techproducts");
-            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<techproducts>>();
-            var results = solr.Query("div");
-            Console.WriteLine($"Count = {results.Count}");
+            // TODO break this out into startup class so don't have to create a new connection every time
+            Startup.Init<WikiModelResult>("http://localhost:8983/solr/wikitest");
+            var solr = ServiceLocator.Current.GetInstance<ISolrOperations<WikiModelResult>>();
+
+            var results = solr.Query(new SolrQueryByField("title", "bowl"), new QueryOptions
+            {
+                ExtraParams = new Dictionary<string, string> {
+                    { "fl", "*,score" }
+                }
+            });
+
+            Console.WriteLine("MaxScore = " +results.MaxScore);
+            Console.WriteLine("NumberFound = " + results.NumFound);
+
             foreach (var result in results)
             {
-                Console.WriteLine($"content = {result.Content.First<string>()}");
+                Console.WriteLine(result.Score);
+                foreach (var title in result.Title)
+                {
+                    Console.WriteLine(title);
+                }
             }
 
             // start of openNLP usage
