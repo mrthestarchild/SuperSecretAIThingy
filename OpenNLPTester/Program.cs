@@ -17,6 +17,8 @@ using Newtonsoft.Json;
 using com.ctc.wstx.ent;
 using System.Threading.Tasks;
 using SolrNet.Commands.Parameters;
+using OpenNLPTester.Utils;
+using OpenNLP.Tools.Chunker;
 
 namespace OpenNLPTester
 {
@@ -31,7 +33,7 @@ namespace OpenNLPTester
             Startup.Init<WikiModelResult>("http://localhost:8983/solr/wikitest");
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<WikiModelResult>>();
 
-            var results = solr.Query(new SolrQueryByField("title", "bowl"), new QueryOptions
+            var results = solr.Query(new SolrQueryByField("title", "quizes"), new QueryOptions
             {
                 ExtraParams = new Dictionary<string, string> {
                     { "fl", "*,score" }
@@ -51,12 +53,14 @@ namespace OpenNLPTester
             }
 
             // start of openNLP usage
+            OpenNLPUtils openNlpUtil = new OpenNLPUtils();
+            var chunkerDefKeys = openNlpUtil.ChunkerTags.Keys;
 
             // get the paths for the Model and Training files
             string modelsPath = Directory.GetCurrentDirectory() + @"\Resources\Models\";
             string trainingPath = Directory.GetCurrentDirectory() + @"\Resources\Training\";
             // TODO: Create buffered reader for someone to enter question using args.
-            string defaultSentence = "- Sorry Mrs. Hudson, I'll skip the tea I'll be back in October 5th 2019. I am headed from Spain to Munich then I am going to stop in Heidelberg.";
+            string defaultSentence = "who is the president of the united states?";
             string defaultParagraph = "Mr. & Mrs. Smith is a 2005 American romantic comedy action film. The film stars Brad Pitt and Angelina Jolie as a bored upper-middle class married couple. They are surprised to learn that they are both assassins hired by competing agencies to kill each other.";
 
             Console.WriteLine("Please enter a sentence to parse: ");
@@ -106,10 +110,29 @@ namespace OpenNLPTester
 
             Seperator("Chunker");
             // Test of the Chunker
+
             var chunks = methods.Chunker(sentence);
             foreach (var chunk in chunks)
             {
-                Console.WriteLine(chunk);
+                try
+                {
+                    if (openNlpUtil.ChunkerTags.TryGetValue(chunk.Tag.ToString(), out string value))
+                    {
+                        Console.WriteLine($"\nthis is a {value}");
+                    }
+                    Console.WriteLine(chunk);
+                    foreach (var taggedWords in chunk.TaggedWords)
+                    {
+                        if (openNlpUtil.TreeBankTags.TryGetValue(taggedWords.Tag, out string splitValue))
+                        {
+                            Console.WriteLine($"this is a {splitValue}");
+                        }
+                    }
+                }
+                catch (NullReferenceException e)
+                {
+                    // TODO update the Dictionary with phrase programtically
+                }
             }
 
             Seperator("Coference");
