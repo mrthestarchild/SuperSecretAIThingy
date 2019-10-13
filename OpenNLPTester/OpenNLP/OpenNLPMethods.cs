@@ -139,7 +139,7 @@ namespace OpenNLPTester
         /// <param name="nameFindPath"></param>
         /// <param name="nerModels"></param>
         /// <returns></returns>
-        public string NER(string sentence, string nameFindPath = null, string[] nerModels = null)
+        public string NER(string sentence, string[] nerModels = null, string nameFindPath = null)
         {
             if (nameFindPath == null)
             {

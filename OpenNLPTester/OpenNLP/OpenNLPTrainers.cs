@@ -1,6 +1,10 @@
-﻿using OpenNLP.Tools.NameFind;
+﻿using Bond.IO.Unsafe;
+using java.io;
+using opennlp.tools.doccat;
+using OpenNLP.Tools.NameFind;
 using SharpEntropy;
 using System;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace OpenNLPTester
@@ -72,14 +76,21 @@ namespace OpenNLPTester
             // Write out our findings.
             if (bestAccuracy == 0)
             {
-                Console.WriteLine("The training was unsuccesful please ensure your file is long enough(17,000 lines mininum) and formatted correctly.");
+                System.Console.WriteLine("The training was unsuccesful please ensure your file is long enough(17,000 lines mininum) and formatted correctly.");
             }
             else
             {
-                Console.WriteLine($"The best accuracy was {bestAccuracy}, the best iteration value was {bestIterationValue}, and the best cutoff value was {bestCutValue}.");
+                System.Console.WriteLine($"The best accuracy was {bestAccuracy}, the best iteration value was {bestIterationValue}, and the best cutoff value was {bestCutValue}.");
             }
 
             return bestModel;
         }
+
+        //public GisModel AnswerTypeTrainer()
+        //{
+        //    // todo create AnswerTypeCLassifier, AnswerTypeContextGenerator, and AnswerTypeEventStream.
+        //    var initialFile = new java.io.File("");
+        //    return GisModel
+        //}
     }
 }
