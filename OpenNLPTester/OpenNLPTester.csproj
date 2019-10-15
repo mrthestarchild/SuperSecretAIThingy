@@ -89,6 +89,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AnswerDeterminer.cs" />
     <Compile Include="Controllers\QuestionParser.cs" />
     <Compile Include="Models\QuestionParserResponseModel.cs" />
     <Compile Include="OpenNLP\OpenNLPTrainers.cs" />
@@ -98,11 +99,8 @@
     <Compile Include="Solr\Models\ISolrBaseModel.cs" />
     <Compile Include="Solr\Models\SolrBaseModel.cs" />
     <Compile Include="Solr\Models\WikiModelResult.cs" />
-    <Compile Include="Solr\SolrManagement.cs" />
     <Compile Include="Solr\SolrQueryMethods.cs" />
-    <Compile Include="Utils\AnswerTypeClassifier.cs" />
     <Compile Include="Utils\AnswerTypeContextGenerator.cs" />
-    <Compile Include="Utils\AnswerTypeEventStream.cs" />
     <Compile Include="Utils\OpenNLPUtils.cs" />
   </ItemGroup>
   <ItemGroup>

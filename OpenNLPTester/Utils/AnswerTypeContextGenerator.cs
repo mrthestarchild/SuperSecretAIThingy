@@ -1,4 +1,5 @@
-﻿using java.io;
+﻿// TODO: Remove, depricated.
+using java.io;
 using java.util;
 using java.util.regex;
 using OpenNLP.Tools.Coreference.Mention;

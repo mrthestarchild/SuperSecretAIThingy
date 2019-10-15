@@ -39,32 +39,35 @@ namespace OpenNLPTester.Controllers
             //get noun phrases
             chunkedQuestion.ForEach(cq =>
             {
-                foreach (var value in openNLPUtils.ChunkerTags)
-                {
-                    if (cq.Tag == value.Key)
-                    {
-                        if (cq.Tag == "NP")
-                        {
+                foreach (var value in openNLPUtils.ChunkerTags) {
+                    if (cq.Tag == value.Key) {
+                        if (cq.Tag == "NP") {
                             var getNPString = "";
                             cq.TaggedWords.ForEach(chunk =>
                             {
-                                if (chunk.Tag == "WP"){
-                                    qParserResponse.QuestionIdentifier = chunk.Word.ToLower();
-                                }
-                                else{
-                                    getNPString += chunk.Tag != "DT" ? chunk.Word.ToLower() + " " : "";
-                                }
-                                
+                                getNPString += chunk.Tag != "DT" ? chunk.Word.ToLower() + " " : "";
+
                             });
-                            if(getNPString.Length > 0) {
-                                getNPString.Substring(0, getNPString.Length - 1);
-                                qParserResponse.QueryParams.Add(getNPString);
+                            if (getNPString.Length > 0) {
+                                getNPString.Substring(0, getNPString.Length - 2);
+
+                                cq.TaggedWords.ForEach(chunkQuestionIdentity =>
+                                {
+                                    if (chunkQuestionIdentity.Tag == "WP") {
+                                        qParserResponse.QuestionIdentifier = getNPString.Trim();
+                                    }
+                                });
+                                qParserResponse.QueryParams.Add(getNPString.Trim());
                             }
                         }
                     }
                 }
+                for (int x = 0; x < qParserResponse.QueryParams.Count; x++) {
+                    if (qParserResponse.QuestionIdentifier == qParserResponse.QueryParams[x]) {
+                        qParserResponse.QueryParams.RemoveAt(x);
+                    }
+                }
             });
-
             return qParserResponse;
         } 
     }
