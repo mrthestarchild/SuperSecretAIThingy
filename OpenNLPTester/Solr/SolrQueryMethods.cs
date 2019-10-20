@@ -1,16 +1,13 @@
 ﻿using CommonServiceLocator;
-using OpenNLPTester.Models;
-using OpenNLPTester.Solr.Models;
+using QuestionAnswerAi.Models;
+using QuestionAnswerAi.Solr.Models;
 using SolrNet;
 using SolrNet.Commands.Parameters;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace OpenNLPTester.Solr
+namespace QuestionAnswerAi.Solr
 {
     class SolrQueryMethods<T> where T : ISolrBaseModel
     {
@@ -31,11 +28,6 @@ namespace OpenNLPTester.Solr
                 { "fl", "*,score" }
             }
             });
-        }
-
-        private PropertyInfo[] GetProperties(T t)
-        {
-            return t.GetType().GetProperties();
         }
     }
 }

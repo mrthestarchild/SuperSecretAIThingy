@@ -7,7 +7,7 @@ using OpenNLP.Tools.Tokenize;
 using System.Collections.Generic;
 using System.IO;
 
-namespace OpenNLPTester
+namespace QuestionAnswerAi
 {
     class OpenNLPMethods
     {

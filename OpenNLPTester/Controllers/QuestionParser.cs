@@ -1,15 +1,10 @@
 ﻿using OpenNLP.Tools.Chunker;
-using OpenNLPTester.Models;
-using OpenNLPTester.Utils;
-using System;
-using System.Collections;
+using QuestionAnswerAi.Models;
+using QuestionAnswerAi.Utils;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace OpenNLPTester.Controllers
+namespace QuestionAnswerAi.Controllers
 {
     class QuestionParser
     {
@@ -36,12 +31,16 @@ namespace OpenNLPTester.Controllers
             List<SentenceChunk> chunkedQuestion = openNlpMethods.Chunker(question);
             qParserResponse.QueryParams = new List<string>();
 
+            // initialize counter for boosting
+            int count = 0;
             //get noun phrases
             chunkedQuestion.ForEach(cq =>
             {
-                foreach (var value in openNLPUtils.ChunkerTags) {
+                foreach (var value in openNLPUtils.ChunkerTags)
+                {
                     if (cq.Tag == value.Key) {
                         if (cq.Tag == "NP") {
+                            count++;
                             var getNPString = "";
                             cq.TaggedWords.ForEach(chunk =>
                             {
@@ -49,26 +48,26 @@ namespace OpenNLPTester.Controllers
 
                             });
                             if (getNPString.Length > 0) {
-                                getNPString.Substring(0, getNPString.Length - 2);
-
                                 cq.TaggedWords.ForEach(chunkQuestionIdentity =>
                                 {
-                                    if (chunkQuestionIdentity.Tag == "WP") {
+                                    if (chunkQuestionIdentity.Tag == "WP")
+                                    {
                                         qParserResponse.QuestionIdentifier = getNPString.Trim();
                                     }
                                 });
-                                qParserResponse.QueryParams.Add(getNPString.Trim());
+                                qParserResponse.QueryParams.Add($"{getNPString.Trim()}");
                             }
                         }
                     }
                 }
-                for (int x = 0; x < qParserResponse.QueryParams.Count; x++) {
-                    if (qParserResponse.QuestionIdentifier == qParserResponse.QueryParams[x]) {
+                for (int x = 0; x < qParserResponse.QueryParams.Count; x++)
+                {
+                    if (qParserResponse.QuestionIdentifier == qParserResponse.QueryParams[x].Trim('"')) {
                         qParserResponse.QueryParams.RemoveAt(x);
                     }
                 }
             });
             return qParserResponse;
-        } 
+        }
     }
 }

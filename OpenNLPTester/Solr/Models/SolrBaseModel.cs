@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenNLPTester.Solr.Models
+namespace QuestionAnswerAi.Solr.Models
 {
     class SolrBaseModel : ISolrBaseModel
     {

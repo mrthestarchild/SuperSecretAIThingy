@@ -1,15 +1,11 @@
-﻿using OpenNLPTester.Models;
-using OpenNLPTester.Solr.Models;
-using OpenNLPTester.Utils;
+﻿using QuestionAnswerAi.Models;
+using QuestionAnswerAi.Solr.Models;
+using QuestionAnswerAi.Utils;
 using SolrNet;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace OpenNLPTester.Controllers
+namespace QuestionAnswerAi.Controllers
 {
     // TODO make generic
     class AnswerDeterminer
@@ -30,7 +26,6 @@ namespace OpenNLPTester.Controllers
             resultsList.ForEach(sortedResult =>
             {
                 if (isfound) return;
-                
                 // TODO make generic
                 string[] splitter = methods.SentenceSplitter(sortedResult.RevisionText.First());
                 foreach (var spSentence in splitter)
@@ -48,8 +43,9 @@ namespace OpenNLPTester.Controllers
                                 {
                                     if (tester.ToLower().Contains($"<{type}>"))
                                     {
-                                        possibleAnswers.Add(tester.Substring((tester.IndexOf($"<{type}>") + $"<{type}>".Length), (tester.IndexOf($"</{type}>") - ((tester.IndexOf($"<{type}>") + $"<{type}>".Length)))));
+                                        //possibleAnswers.Add(tester.Substring((tester.IndexOf($"<{type}>") + $"<{type}>".Length), (tester.IndexOf($"</{type}>") - ((tester.IndexOf($"<{type}>") + $"<{type}>".Length)))));
                                         isfound = true;
+                                        possibleAnswers.Add(spSentence);
                                     }
                                 }
                             }
@@ -65,8 +61,9 @@ namespace OpenNLPTester.Controllers
                                         {
                                             if (tester.ToLower().Contains($"<{type}>"))
                                             {
-                                                possibleAnswers.Add(tester.Substring((tester.IndexOf($"<{type}>") + $"<{type}>".Length), (tester.IndexOf($"</{type}>") - ((tester.IndexOf($"<{type}>") + $"<{type}>".Length)))));
+                                                //possibleAnswers.Add(tester.Substring((tester.IndexOf($"<{type}>") + $"<{type}>".Length), (tester.IndexOf($"</{type}>") - ((tester.IndexOf($"<{type}>") + $"<{type}>".Length)))));
                                                 isfound = true;
+                                                possibleAnswers.Add(spSentence);
                                             }
                                         }
                                     }

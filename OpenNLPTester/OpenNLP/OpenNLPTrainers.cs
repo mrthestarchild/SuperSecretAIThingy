@@ -1,13 +1,8 @@
-﻿using Bond.IO.Unsafe;
-using java.io;
-using opennlp.tools.doccat;
-using OpenNLP.Tools.NameFind;
+﻿using OpenNLP.Tools.NameFind;
 using SharpEntropy;
-using System;
-using System.IO;
 using System.Text.RegularExpressions;
 
-namespace OpenNLPTester
+namespace QuestionAnswerAi
 {
     class OpenNLPTrainers
     {

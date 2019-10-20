@@ -1,34 +1,27 @@
-﻿using System;
+﻿using CommonServiceLocator;
+using Microsoft.Extensions.DependencyInjection;
+using QuestionAnswerAi.Controllers;
+using QuestionAnswerAi.Solr;
+using QuestionAnswerAi.Solr.Models;
+using QuestionAnswerAi.Utils;
+using SolrNet;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using SharpEntropy.IO;
-using SharpEntropy;
-using SolrNet;
-using SolrNet.Attributes;
-using CommonServiceLocator;
-using System.Linq;
-using OpenNLP.Tools.Coreference;
-using OpenNLP.Tools.Lang.English;
-using OpenNLPTester.Solr.Models;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net;
-using Newtonsoft.Json;
-using com.ctc.wstx.ent;
-using System.Threading.Tasks;
-using SolrNet.Commands.Parameters;
-using OpenNLPTester.Utils;
-using OpenNLP.Tools.Chunker;
-using OpenNLPTester.Controllers;
-using OpenNLPTester.Solr;
-using OpenNLPTester.Models;
 
-namespace OpenNLPTester
+namespace QuestionAnswerAi
 {
     class Program
     {
         static void Main(string[] args)
         {
+            // Create Startup classes
+            // This doesn't do anything right now.
+            IServiceCollection services = new ServiceCollection();
+            OpenNLPTester.Startup startup = new OpenNLPTester.Startup();
+            startup.ConfigureServices(services);
+            IServiceProvider serviceProvider = services.BuildServiceProvider();
+
             // Usage of Solr Query using Solr.net
             // TODO: break this out into startup class so don't have to create a new connection every time
             Startup.Init<WikiModelResult>("http://localhost:8983/solr/wikitest");
@@ -60,7 +53,7 @@ namespace OpenNLPTester
 
             // TODO: Remove block after testing
             Seperator("Show Question Params");
-            Console.WriteLine("TimeRef = " +parseQuestionObj.HasTimeRef);
+            Console.WriteLine("TimeRef = " + parseQuestionObj.HasTimeRef);
             Console.WriteLine("Question = " + parseQuestionObj.Question);
             Console.WriteLine("QuestionIdentifier = " + parseQuestionObj.QuestionIdentifier);
             parseQuestionObj.QueryParams.ForEach(word => Console.WriteLine(word));
@@ -75,8 +68,8 @@ namespace OpenNLPTester
             {
                 Console.WriteLine(answer);
             }
-            
-            
+
+
 
             Seperator("posTagger");
             // Test of posTagger from tokenized string

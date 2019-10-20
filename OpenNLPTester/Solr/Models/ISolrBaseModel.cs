@@ -1,4 +1,4 @@
-﻿namespace OpenNLPTester.Solr.Models
+﻿namespace QuestionAnswerAi.Solr.Models
 {
     interface ISolrBaseModel
     {

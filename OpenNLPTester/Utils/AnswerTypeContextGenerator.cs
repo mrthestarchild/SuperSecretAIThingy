@@ -1,18 +1,14 @@
 ﻿// TODO: Remove, depricated.
 using java.io;
-using java.util;
 using java.util.regex;
 using OpenNLP.Tools.Coreference.Mention;
 using OpenNLP.Tools.Parser;
 using OpenNLP.Tools.Util;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace OpenNLPTester.Utils
+namespace QuestionAnswerAi.Utils
 {
     class AnswerTypeContextGenerator
     {
