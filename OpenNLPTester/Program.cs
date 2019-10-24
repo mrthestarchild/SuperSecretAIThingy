@@ -62,14 +62,12 @@ namespace QuestionAnswerAi
             SolrQueryResults<WikiModelResult> resultList = solrMethods.QueryList(parseQuestionObj, "revisionText");
 
             // get ner type
-            List<string> possibleAnswers = pAnswer.tryFindAnswer(resultList, parseQuestionObj);
+            List<string> possibleAnswers = pAnswer.TryFindAnswer(resultList, parseQuestionObj);
             Seperator("Answers");
             foreach (var answer in possibleAnswers)
             {
                 Console.WriteLine(answer);
             }
-
-
 
             Seperator("posTagger");
             // Test of posTagger from tokenized string
@@ -81,7 +79,7 @@ namespace QuestionAnswerAi
 
             // Test of the Chunker
             Seperator("Chunker");
-
+            // show chucker
             var chunks = nlpMethods.Chunker(sentence);
             foreach (var chunk in chunks)
             {

@@ -150,6 +150,7 @@
     <Compile Include="Controllers\AnswerDeterminer.cs" />
     <Compile Include="Controllers\QuestionParser.cs" />
     <Compile Include="IService.cs" />
+    <Compile Include="Models\PossibleResultsModel.cs" />
     <Compile Include="Models\QuestionParserResponseModel.cs" />
     <Compile Include="OpenNLP\OpenNLPTrainers.cs" />
     <Compile Include="OpenNLP\OpenNLPMethods.cs" />
