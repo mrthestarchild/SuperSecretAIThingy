@@ -1,6 +1,7 @@
 ﻿using CommonServiceLocator;
 using Microsoft.Extensions.DependencyInjection;
 using QuestionAnswerAi.Controllers;
+using QuestionAnswerAi.Models;
 using QuestionAnswerAi.Solr;
 using QuestionAnswerAi.Solr.Models;
 using QuestionAnswerAi.Utils;
@@ -8,6 +9,7 @@ using SolrNet;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace QuestionAnswerAi
 {
@@ -24,6 +26,13 @@ namespace QuestionAnswerAi
 
             // Usage of Solr Query using Solr.net
             // TODO: break this out into startup class so don't have to create a new connection every time
+            // Get settings collection
+            Startup.Init<QASettingsModel>("http://localhost:8983/solr/qasettings");
+            var qaSettings = ServiceLocator.Current.GetInstance<ISolrOperations<QASettingsModel>>();
+
+            var qaSettingsMethods = new SolrQueryMethods<QASettingsModel>(qaSettings);
+
+            // Get Wiki collection
             Startup.Init<WikiModelResult>("http://localhost:8983/solr/wikitest");
             var solr = ServiceLocator.Current.GetInstance<ISolrOperations<WikiModelResult>>();
 
@@ -31,6 +40,10 @@ namespace QuestionAnswerAi
 
             // start of openNLP usage
             OpenNLPUtils openNlpUtil = new OpenNLPUtils();
+
+            //create question identifier dictonary
+            var getSettings = qaSettingsMethods.QueryAll();
+            openNlpUtil.QuestionDetermination = getSettings.ToDictionary(settingResults => settingResults.QuestionIdentifier, settingResults => settingResults.NerTypes.ToArray());
 
             // get the paths for the Model and Training files
             string modelsPath = Directory.GetCurrentDirectory() + @"\Resources\Models\";
@@ -51,6 +64,15 @@ namespace QuestionAnswerAi
             QuestionParser qparse = new QuestionParser();
             var parseQuestionObj = qparse.parseQuestion(sentence);
 
+            // Make sure the program knows who the question Identifier is and knows it's definition
+            if (!openNlpUtil.QuestionDetermination.ContainsKey(parseQuestionObj.QuestionIdentifier)) {
+                HumanTrainerAssistant humanTraining = new HumanTrainerAssistant(nlpMethods, qaSettingsMethods, modelsPath);
+                humanTraining.AskForDefinition(parseQuestionObj);
+
+                getSettings = qaSettingsMethods.QueryAll();
+                openNlpUtil.QuestionDetermination = getSettings.ToDictionary(settingResults => settingResults.QuestionIdentifier, settingResults => settingResults.NerTypes.ToArray());
+            }
+
             // TODO: Remove block after testing
             Seperator("Show Question Params");
             Console.WriteLine("TimeRef = " + parseQuestionObj.HasTimeRef);
@@ -61,29 +83,33 @@ namespace QuestionAnswerAi
             // query the db for params, push them into a list of results
             SolrQueryResults<WikiModelResult> resultList = solrMethods.QueryList(parseQuestionObj, "revisionText");
 
-            // get ner type
-            List<string> possibleAnswers = pAnswer.TryFindAnswer(resultList, parseQuestionObj);
+            // uncomment for testing if you want the full list.
+            //List<PossibleResultsModel> possibleAnswersList = pAnswer.TryFindAnswer(resultList, parseQuestionObj);
+            //Seperator("Answers");
+            //if (possibleAnswersList.Count > 0)
+            //{
+            //    foreach (var possibleAnswer in possibleAnswersList)
+            //    {
+            //        Console.WriteLine("------------------------------------------------------");
+            //        Console.WriteLine($"{possibleAnswer.FoundNerResult} score = {possibleAnswer.Score}");
+            //        Console.WriteLine($"sentence = {possibleAnswer.PossibleResultSentence}");
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine("I couldn't find any answers to that question.");
+            //}
+            var foundAnswer = pAnswer.TryFindAnswer(resultList, parseQuestionObj);
             Seperator("Answers");
-            foreach (var answer in possibleAnswers)
+            if(foundAnswer != null)
             {
-                Console.WriteLine(answer);
+                // TODO: add question to result so we can try to build a better human readable answer.
+                Console.WriteLine($"{foundAnswer.FoundNerResult} score = {foundAnswer.Score}");
+                //Console.WriteLine($"sentence = {possibleAnswer.PossibleResultSentence}");
             }
-
-            Seperator("posTagger");
-            // Test of posTagger from tokenized string
-            string[] pos = nlpMethods.POSTagger(sentence);
-            foreach (string po in pos)
+            else
             {
-                Console.WriteLine(po);
-            }
-
-            // Test of the Chunker
-            Seperator("Chunker");
-            // show chucker
-            var chunks = nlpMethods.Chunker(sentence);
-            foreach (var chunk in chunks)
-            {
-                Console.WriteLine(chunk);
+                Console.WriteLine("I couldn't find any answers to that question.");
             }
 
             Console.WriteLine("Done!");

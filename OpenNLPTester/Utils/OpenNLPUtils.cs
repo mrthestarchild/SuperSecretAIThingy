@@ -63,19 +63,8 @@ namespace QuestionAnswerAi.Utils
                 { "NP", "Noun Phrase" },
                 { "VP", "Verb Phrase" },
                 { "PP", "Preposition" },
+                { "ADVP", "Adverb Phrase"},
                 { ".", "End of sentence" }
-            };
-            
-
-            // create question determination based on wh- words
-            QuestionDetermination = new Dictionary<string, string[]>
-            {
-                { "who",       new string[] { "person" } },
-                { "what time", new string[] { "date" } },
-                { "what day",  new string[] { "date" } },
-                { "where",     new string[] { "place" } },
-                { "when",      new string[] { "place" } },
-                { "why",       new string[] { "place" } },
             };
 
             // create no time frame defs to define and find default times for now

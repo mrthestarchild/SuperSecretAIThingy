@@ -147,24 +147,32 @@ namespace QuestionAnswerAi
             }
             if (nerModels == null)
             {
-                string[] files = Directory.GetFiles(nameFindPath);
-                int filesLength = files.Length;
-                string[] currentModels = new string[filesLength];
-                //create list of model types from models folder
-                for (int x = 0; x < filesLength; x++)
-                {
-                    currentModels[x] = Path.GetFileName(files[x]);
-                    // sanitize file name
-                    currentModels[x] = currentModels[x].Replace(".nbin", "");
-                }
-                nerModels = currentModels;
+                nerModels = GetAllModelTypes(nameFindPath);
             }
             EnglishNameFinder nameFinder = new EnglishNameFinder(nameFindPath);
             // specify which types of entities you want to detect
             return nameFinder.GetNames(nerModels, sentence);
         }
 
-        // TODO: create coreference method.
+        /// <summary>
+        /// Returns all trained NER Models.
+        /// </summary>
+        /// <param name="nameFindPath"></param>
+        /// <returns></returns>
+        public string[] GetAllModelTypes(string nameFindPath) {
+
+            string[] files = Directory.GetFiles(nameFindPath);
+            int filesLength = files.Length;
+            string[] currentModels = new string[filesLength];
+            //create list of model types from models folder
+            for (int x = 0; x < filesLength; x++)
+            {
+                currentModels[x] = Path.GetFileName(files[x]);
+                // sanitize file name
+                currentModels[x] = currentModels[x].Replace(".nbin", "");
+            }
+            return currentModels;
+        }
 
     }
 }

@@ -50,12 +50,31 @@ namespace QuestionAnswerAi.Controllers
                             if (getNPString.Length > 0) {
                                 cq.TaggedWords.ForEach(chunkQuestionIdentity =>
                                 {
-                                    if (chunkQuestionIdentity.Tag == "WP")
+                                    if (chunkQuestionIdentity.Tag == "WP" || chunkQuestionIdentity.Tag == "WDT")
                                     {
                                         qParserResponse.QuestionIdentifier = getNPString.Trim();
                                     }
                                 });
                                 qParserResponse.QueryParams.Add($"{getNPString.Trim()}");
+                            }
+                        }
+                        //TODO: add question Identifier for adv
+                        else if (cq.Tag == "ADVP" && qParserResponse.QuestionIdentifier == null) {
+                            var getADVPString = "";
+                            cq.TaggedWords.ForEach(chunk =>
+                            {
+                                getADVPString += chunk.Tag != "DT" ? chunk.Word.ToLower() + " " : "";
+
+                            });
+                            if (getADVPString.Length > 0)
+                            {
+                                cq.TaggedWords.ForEach(chunkQuestionIdentity =>
+                                {
+                                    if (chunkQuestionIdentity.Tag == "WRB")
+                                    {
+                                        qParserResponse.QuestionIdentifier = getADVPString.Trim();
+                                    }
+                                });
                             }
                         }
                     }

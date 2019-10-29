@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{61C8EBE2-2951-4254-B866-8CE6F9A0F585}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>OpenNLPTester</RootNamespace>
+    <RootNamespace>QuestionAnswerAi</RootNamespace>
     <AssemblyName>OpenNLPTester</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -148,16 +148,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AnswerDeterminer.cs" />
+    <Compile Include="Controllers\HumanTrainerAssistant.cs" />
     <Compile Include="Controllers\QuestionParser.cs" />
     <Compile Include="IService.cs" />
     <Compile Include="Models\PossibleResultsModel.cs" />
     <Compile Include="Models\QuestionParserResponseModel.cs" />
+    <Compile Include="Models\ScoringModel.cs" />
     <Compile Include="OpenNLP\OpenNLPTrainers.cs" />
     <Compile Include="OpenNLP\OpenNLPMethods.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service.cs" />
     <Compile Include="Solr\Models\ISolrBaseModel.cs" />
+    <Compile Include="Solr\Models\QASettingsModel.cs" />
     <Compile Include="Solr\Models\SolrBaseModel.cs" />
     <Compile Include="Solr\Models\WikiModelResult.cs" />
     <Compile Include="Solr\SolrQueryMethods.cs" />

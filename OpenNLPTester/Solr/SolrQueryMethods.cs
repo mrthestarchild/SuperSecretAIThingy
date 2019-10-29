@@ -29,5 +29,22 @@ namespace QuestionAnswerAi.Solr
             }
             });
         }
+
+        /// <summary>
+        /// Query's all entries for collection
+        /// </summary>
+        /// <returns></returns>
+        public SolrQueryResults<T> QueryAll()
+        {
+            return solr.Query(new SolrQuery("*:*"));
+        }
+
+        public void AddSingleEntry(T model)
+        {
+            solr.Add(model);
+            solr.Commit();
+        }
+
+        
     }
 }

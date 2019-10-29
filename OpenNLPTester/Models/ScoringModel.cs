@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace QuestionAnswerAi.Models
 {
-    class PossibleResultsModel
+    class ScoringModel
     {
+        public string SubstringedSentence { get; set; }
         public int StartIndex { get; set; }
         public int EndIndex { get; set; }
-        public string FoundNerResult { get; set; }
-        public string PossibleResultSentence { get; set; }
-        public string NerResultSentence { get; set; }
-        public double Score { get; set; } = 0;
+        public int WordDistance { get; set; }
+        public double Boost { get; set; }
     }
 }
