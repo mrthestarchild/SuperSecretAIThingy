@@ -38,7 +38,7 @@ namespace QuestionAnswerAi.Controllers
                 if (isfound) return;
                 // TODO make generic
                 string[] splitSentence = _methods.SentenceSplitter(sortedResult.RevisionText.First());
-                
+
                 var possibleAnswerList = GetPossibleResultItems(parseQuestionObj, nerTypes, splitSentence, sortedResult.Score);
                 var scoredList = ScoreAnswerByIndexLookup(possibleAnswerList, parseQuestionObj);
                 var list = DetermineAnswerByScore(scoredList);
@@ -55,7 +55,8 @@ namespace QuestionAnswerAi.Controllers
         /// <returns></returns>
         private string[] GetNERTypes(QuestionParserResponseModel qprm)
         {
-            if (_openNlpUtil.QuestionDetermination.TryGetValue(qprm.QuestionIdentifier, out string[] value)) {
+            if (_openNlpUtil.QuestionDetermination.TryGetValue(qprm.QuestionIdentifier, out string[] value))
+            {
                 return value;
             }
             return null;
@@ -162,16 +163,22 @@ namespace QuestionAnswerAi.Controllers
         {
             // TODO: return Object with different possible answers
             var indexes = new List<PossibleResultsModel>();
-            foreach (var spSentence in splitSentence) {
+            foreach (var spSentence in splitSentence)
+            {
                 // if (isfound) break;
-                foreach (var queryParams in parseQuestionObj.QueryParams) {
-                    if (spSentence.ToLower().Contains(queryParams)) {
-                        if (parseQuestionObj.HasTimeRef) {
+                foreach (var queryParams in parseQuestionObj.QueryParams)
+                {
+                    if (spSentence.ToLower().Contains(queryParams))
+                    {
+                        if (parseQuestionObj.HasTimeRef)
+                        {
                             var nerSentence = _methods.NER(spSentence, nerTypes);
-                            foreach (var type in nerTypes) {
+                            foreach (var type in nerTypes)
+                            {
                                 int numNerFound = nerSentence.Split(new string[] { $"<{type}>" }, StringSplitOptions.None).Length - 1;
                                 var startingIndex = 0;
-                                for (int x = 0; x < numNerFound; x++) {
+                                for (int x = 0; x < numNerFound; x++)
+                                {
                                     var possibleResults = new PossibleResultsModel();
                                     possibleResults.StartIndex = nerSentence.IndexOf($"<{type}>", startingIndex) + $"<{type}>".Length;
                                     possibleResults.EndIndex = nerSentence.IndexOf($"</{type}>", possibleResults.StartIndex);
@@ -185,19 +192,23 @@ namespace QuestionAnswerAi.Controllers
                                 }
                             }
                         }
-                        else {
+                        else
+                        {
                             string[] currentTimeFrame = _openNlpUtil.NoTimeFrameDefs;
-                            foreach (var time in currentTimeFrame) {
-                                if (spSentence.ToLower().Contains(time)) {
+                            foreach (var time in currentTimeFrame)
+                            {
+                                if (spSentence.ToLower().Contains(time))
+                                {
                                     var nerSentence = _methods.NER(spSentence, nerTypes);
-                                    foreach (var type in nerTypes) {
+                                    foreach (var type in nerTypes)
+                                    {
                                         // TODO: break this out into a method of its own
                                         int numNerFound = nerSentence.Split(new string[] { $"<{type}>" }, StringSplitOptions.None).Length - 1;
                                         var startingIndex = 0;
                                         for (int x = 0; x < numNerFound; x++)
                                         {
                                             var possibleResults = new PossibleResultsModel();
-                                            possibleResults.StartIndex = nerSentence.IndexOf($"<{type}>", startingIndex) + $"<{type}>".Length ;
+                                            possibleResults.StartIndex = nerSentence.IndexOf($"<{type}>", startingIndex) + $"<{type}>".Length;
                                             possibleResults.EndIndex = nerSentence.IndexOf($"</{type}>", possibleResults.StartIndex);
                                             var substringLength = possibleResults.EndIndex - possibleResults.StartIndex;
                                             startingIndex = possibleResults.EndIndex + $"<{type}>".Length;

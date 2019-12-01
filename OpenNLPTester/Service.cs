@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
-namespace OpenNLPTester
+namespace QuestionAnswerAi
 {
     class Service : IService
     {
@@ -19,7 +19,7 @@ namespace OpenNLPTester
 
             _baseUrl = baseUrl;
             _token = token;
-            _solrUrl = solrUrl; 
+            _solrUrl = solrUrl;
             _logger = loggerFactory.CreateLogger<Service>();
         }
 

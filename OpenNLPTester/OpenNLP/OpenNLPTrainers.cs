@@ -29,7 +29,7 @@ namespace QuestionAnswerAi
         /// <returns>best GisModel</returns>
         public GisModel TrainNER(string testSentence, int[] iterations, int[] cuts, string trainingFile, string[] listOfTypes)
         {
-            string pathToTrainingFile = $@"{trainingPath}NER\{trainingFile}";           
+            string pathToTrainingFile = $@"{trainingPath}NER\{trainingFile}";
 
             // init values
             var bestIterationValue = iterations[0];

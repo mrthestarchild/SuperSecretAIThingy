@@ -1,11 +1,8 @@
-﻿using CommonServiceLocator;
-using QuestionAnswerAi.Models;
+﻿using QuestionAnswerAi.Models;
 using QuestionAnswerAi.Solr.Models;
 using SolrNet;
 using SolrNet.Commands.Parameters;
-using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace QuestionAnswerAi.Solr
 {
@@ -13,10 +10,11 @@ namespace QuestionAnswerAi.Solr
     {
         private ISolrOperations<T> solr;
 
-        public SolrQueryMethods(ISolrOperations<T> _solr){
+        public SolrQueryMethods(ISolrOperations<T> _solr)
+        {
             solr = _solr;
         }
-        
+
         // TODO: make generic
         public SolrQueryResults<T> QueryList(QuestionParserResponseModel parseQuestionObj, string fieldToSearch, int numberOfRows = 10)
         {
@@ -45,6 +43,6 @@ namespace QuestionAnswerAi.Solr
             solr.Commit();
         }
 
-        
+
     }
 }

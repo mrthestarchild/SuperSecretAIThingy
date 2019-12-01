@@ -13,7 +13,8 @@ namespace QuestionAnswerAi
     {
         private string modelsPath;
 
-        public OpenNLPMethods(string _modelsPath){
+        public OpenNLPMethods(string _modelsPath)
+        {
             modelsPath = _modelsPath;
         }
 
@@ -159,7 +160,8 @@ namespace QuestionAnswerAi
         /// </summary>
         /// <param name="nameFindPath"></param>
         /// <returns></returns>
-        public string[] GetAllModelTypes(string nameFindPath) {
+        public string[] GetAllModelTypes(string nameFindPath)
+        {
 
             string[] files = Directory.GetFiles(nameFindPath);
             int filesLength = files.Length;

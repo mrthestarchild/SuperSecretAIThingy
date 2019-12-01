@@ -38,8 +38,10 @@ namespace QuestionAnswerAi.Controllers
             {
                 foreach (var value in openNLPUtils.ChunkerTags)
                 {
-                    if (cq.Tag == value.Key) {
-                        if (cq.Tag == "NP") {
+                    if (cq.Tag == value.Key)
+                    {
+                        if (cq.Tag == "NP")
+                        {
                             count++;
                             var getNPString = "";
                             cq.TaggedWords.ForEach(chunk =>
@@ -47,7 +49,8 @@ namespace QuestionAnswerAi.Controllers
                                 getNPString += chunk.Tag != "DT" ? chunk.Word.ToLower() + " " : "";
 
                             });
-                            if (getNPString.Length > 0) {
+                            if (getNPString.Length > 0)
+                            {
                                 cq.TaggedWords.ForEach(chunkQuestionIdentity =>
                                 {
                                     if (chunkQuestionIdentity.Tag == "WP" || chunkQuestionIdentity.Tag == "WDT")
@@ -59,7 +62,8 @@ namespace QuestionAnswerAi.Controllers
                             }
                         }
                         //TODO: add question Identifier for adv
-                        else if (cq.Tag == "ADVP" && qParserResponse.QuestionIdentifier == null) {
+                        else if (cq.Tag == "ADVP" && qParserResponse.QuestionIdentifier == null)
+                        {
                             var getADVPString = "";
                             cq.TaggedWords.ForEach(chunk =>
                             {
@@ -81,7 +85,8 @@ namespace QuestionAnswerAi.Controllers
                 }
                 for (int x = 0; x < qParserResponse.QueryParams.Count; x++)
                 {
-                    if (qParserResponse.QuestionIdentifier == qParserResponse.QueryParams[x].Trim('"')) {
+                    if (qParserResponse.QuestionIdentifier == qParserResponse.QueryParams[x].Trim('"'))
+                    {
                         qParserResponse.QueryParams.RemoveAt(x);
                     }
                 }

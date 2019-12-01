@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QuestionAnswerAi.Utils
 {
@@ -55,8 +52,8 @@ namespace QuestionAnswerAi.Utils
                 { "WP$", "Possessive wh­pronoun" },
                 { "WRB", "Wh­-adverb" }
             };
-         
-                                                                                                                                                        
+
+
             // create ChunkerTags definitions to check for tag definitions
             ChunkerTags = new Dictionary<string, string>
             {
@@ -68,7 +65,7 @@ namespace QuestionAnswerAi.Utils
             };
 
             // create no time frame defs to define and find default times for now
-            NoTimeFrameDefs = new string[] 
+            NoTimeFrameDefs = new string[]
             {
                 DateTime.Now.Year.ToString().ToLower(),
                 "current",

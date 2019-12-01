@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace OpenNLPTester
+namespace QuestionAnswerAi
 {
     internal interface IService
     {

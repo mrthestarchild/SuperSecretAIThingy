@@ -1,10 +1,5 @@
-﻿using QuestionAnswerAi.Solr.Models;
-using SolrNet.Attributes;
-using System;
+﻿using SolrNet.Attributes;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QuestionAnswerAi.Solr.Models
 {
