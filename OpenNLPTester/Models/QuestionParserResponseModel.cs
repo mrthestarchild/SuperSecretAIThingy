@@ -2,7 +2,7 @@
 
 namespace QuestionAnswerAi.Models
 {
-    class QuestionParserResponseModel
+    public class QuestionParserResponseModel
     {
         public string Question { get; set; }
         public List<string> QueryParams { get; set; }

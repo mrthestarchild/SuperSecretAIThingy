@@ -10,9 +10,9 @@ namespace QuestionAnswerAi.Controllers
     {
         private OpenNLPMethods _nlpMethods;
         private string _modelsPath;
-        private SolrQueryMethods<QASettingsModel> _qaSettingsMethods;
+        private SolrQueryMethods<QaSettingsModel> _qaSettingsMethods;
 
-        public HumanTrainerAssistant(OpenNLPMethods nlpMethods, SolrQueryMethods<QASettingsModel> qaSettingsMethods, string modelsPath)
+        public HumanTrainerAssistant(OpenNLPMethods nlpMethods, SolrQueryMethods<QaSettingsModel> qaSettingsMethods, string modelsPath)
         {
             _nlpMethods = nlpMethods;
             _qaSettingsMethods = qaSettingsMethods;
@@ -57,7 +57,7 @@ namespace QuestionAnswerAi.Controllers
                 }
             }
             // build new object to insert into database
-            QASettingsModel newDictonarySetting = new QASettingsModel();
+            QaSettingsModel newDictonarySetting = new QaSettingsModel();
             newDictonarySetting.QuestionIdentifier = parseQuestionObj.QuestionIdentifier;
             newDictonarySetting.NerTypes = results;
             // add object into database
