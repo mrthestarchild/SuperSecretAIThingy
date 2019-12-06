@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace QuestionAnswerAi.Solr.Models
 {
-    class QASettingsModel : ISolrBaseModel
+    class QaSettingsModel : ISolrBaseModel
     {
         [SolrUniqueKey("id")]
         public string Id { get; set; }
